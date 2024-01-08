@@ -1,19 +1,20 @@
 import { useState } from "react";
-const orders = [100, 200, 300]
 function App() {
-  const [counter, setCounter] = useState(() => {
-    const total = orders.reduce((total, cur) => total + cur)
-    return total
+  const [info, setInfo] = useState({
+    name: 'Nguyen Van A',
+    age: 18,
+    address: 'Ha Noi, VN'
   })
-  const handleIncrease = () => {
-    setCounter(prevState => prevState + 1)
-    setCounter(p revState => prevState + 1)
-    setCounter(prevState => prevState + 1)
+  const handleUpdate = () => {
+    setInfo({
+      ...info,
+      bio: 'Hihi'
+    })
   }
   return (
     <div className="App" style={{ padding: 20 }}>
-      <h1>{counter}</h1>
-      <button onClick={handleIncrease}>Increase</button>
+      <h1>{JSON.stringify(info)}</h1>
+      <button onClick={handleUpdate}>Update</button>
     </div>
   );
 }
