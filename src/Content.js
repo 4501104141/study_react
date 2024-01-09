@@ -8,11 +8,12 @@ import { useEffect, useState } from "react"
 // - Callback se duoc goi lai moi khi deps thay doi
 //------------------
 // 1. Callback luon duoc goi sau khi component mounted
+// 2. Cleanup function luon duoc goi truoc khi component unmounted
 const tabs = ['posts', 'comments', 'albums', 'photos', 'todos', 'users']
 function Content() {
-    const [title, setTitle] = useState('')
     const [posts, setPosts] = useState([])
     const [type, setType] = useState('posts')
+    const [showGoToTop, setShowGoToTop] = useState(false)
     useEffect(() => {
         fetch(`https://jsonplaceholder.typicode.com/${type}`)
             .then(res => res.json())
@@ -20,6 +21,22 @@ function Content() {
                 setPosts(posts)
             })
     }, [type])
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY >= 200) {
+                setShowGoToTop(true)
+            } else {
+                setShowGoToTop(false)
+            }
+        }
+        window.addEventListener('scroll', handleScroll)
+        console.log('addEventListener');
+        //Cleanup function
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            console.log('removeEventListener');
+        }
+    }, [])
     return (
         <div>
             {tabs.map(tab => (
@@ -34,15 +51,19 @@ function Content() {
                     {tab}
                 </button>
             ))}
-            <input
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-            />
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>{post.title || post.name}</li>
-                ))}
-            </ul>
+            {posts.map(post => (
+                <li key={post.id}>{post.title || post.name}</li>
+            ))}
+            {showGoToTop && (
+                <button
+                    style={{
+                        position: 'fixed',
+                        right: 20,
+                        bottom: 20
+                    }}>
+                    Go to top
+                </button>
+            )}
         </div>
     )
 }
