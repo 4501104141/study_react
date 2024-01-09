@@ -11,17 +11,27 @@ import { useEffect, useState } from "react"
 // 2. Cleanup function luon duoc goi truoc khi component unmounted
 // 3. Cleanup function luon duoc goi truoc khi callback duoc goi
 function Content() {
-    const [count, setCount] = useState(1)
+    const [avatar, setAvatar] = useState()
     useEffect(() => {
-        console.log(`Mounted or re-render lan ${count}`)
+        //Cleanup
         return () => {
-            console.log(`Cleanup lan ${count}`);
+            avatar && URL.revokeObjectURL(avatar.preview)
         }
-    }, [count])
+    }, [avatar])
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0]
+        file.preview = URL.createObjectURL(file)
+        setAvatar(file)
+    }
     return (
         <div>
-            <h1>{count}</h1>
-            <button onClick={() => setCount(count + 1)}>Click me!</button>
+            <input
+                type="file"
+                onChange={handlePreviewAvatar}
+            />
+            {avatar && (
+                <img src={avatar.preview} alt="" width="80%" />
+            )}
         </div>
     )
 }
