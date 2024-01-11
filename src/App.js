@@ -6,6 +6,9 @@ function App() {
   const handleAdd = () => {
     dispatch(actions.addTodo(todoInput))
   }
+  const handleDelete = () => {
+    dispatch(actions.deleteTodo(todoInput))
+  }
   return (
     <div style={{ padding: 32 }}>
       <input
@@ -17,7 +20,7 @@ function App() {
       />
       <button onClick={handleAdd}>Add</button>
       {todos.map((todo, index) => (
-        <li key={index}>{todo}</li>
+        <li key={index}>{todo}<span onClick={handleDelete}>X</span></li>
       ))}
     </div>
   );
