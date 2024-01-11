@@ -1,7 +1,15 @@
-import { SET_TODO_INPUT, ADD_TODO, DELETE_TODO } from "./constants"
+import {
+    SET_TODO_INPUT, ADD_TODO, DELETE_TODO, DELETE_TODO_ALL,
+    START_EDIT_TODO,
+    EDITING_TODO,
+    END_EDIT_TODO
+} from "./constants"
+import storage from "./storage";
 const initState = {
-    todos: [],
-    todoInput: '',
+    todos: storage.get(),
+    todoInput: "",
+    editIndex: null,
+    editInput: ""
 }
 function reducer(state, action) {
     switch (action.type) {
@@ -22,6 +30,29 @@ function reducer(state, action) {
                 ...state,
                 todos: newJobs
             }
+        case DELETE_TODO_ALL:
+            return {
+                ...state,
+                todos: []
+            }
+        case START_EDIT_TODO:
+            return {
+                ...state,
+                editIndex: action.payload.index,
+                editInput: action.payload.todo
+            }
+        case EDITING_TODO:
+            return {
+                ...state,
+                editInput: action.payload
+            };
+        case END_EDIT_TODO:
+            state.todos[action.payload.index] = action.payload.editInput;
+            storage.set(state.todos);
+            return {
+                ...state,
+                editIndex: null
+            };
         default:
             throw new Error('Invalid action.')
     }
