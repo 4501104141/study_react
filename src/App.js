@@ -1,9 +1,13 @@
 import Button from "./components/Button";
+import GlobalStyles from './components/GlobalStyles'
 function App() {
   return (
-    <div style={{ padding: 32 }}>
-      <Button />
-    </div>
+    <GlobalStyles>
+      <div style={{ padding: 32 }}>
+        <Button />
+        <Button primary />
+      </div>
+    </GlobalStyles>
   );
 }
 

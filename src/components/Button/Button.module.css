@@ -3,6 +3,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.active {
-    background-color: red;
+.primary {
+    color: #fff;
+    background-color: #007bff;
 }
